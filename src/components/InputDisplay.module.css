@@ -1,0 +1,16 @@
+.inputDisplay {
+  margin-top: 2rem;
+  height: 8rem;
+  width: 95%;
+
+  text-align: right;
+  background-color: rgb(25, 25, 25);
+  /* background-color: rgb(152, 49, 49); */
+  font-size: 6rem;
+  color: white;
+  border: none;
+}
+
+.inputDisplay:focus {
+  outline: none;
+}

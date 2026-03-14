@@ -1,0 +1,11 @@
+.calculator {
+  width: 25rem;
+  height: 50rem;
+  background-color:rgb(25, 25, 25);
+  /* background-color:rgb(53, 35, 165); */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
