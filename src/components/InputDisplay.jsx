@@ -1,8 +1,9 @@
 import styles from './InputDisplay.module.css'
 
-function InputDisplay() {
+function InputDisplay({ input, handleKeyDown }) {
+
   return <>
-    <input autoFocus type="text" className={styles.inputDisplay}/>
+    <input autoFocus type="text" className={styles.inputDisplay} value={input} onKeyDown={handleKeyDown} />
   </>
 }
 

@@ -1,9 +1,11 @@
 import Items from './Items'
 
-function Buttons({buttonArr}) {
-  return <div>
-    <Items buttonArr={buttonArr}/>
-  </div>
+function Buttons({ buttonArr, handlingClick }) {
+  return (
+    <div>
+      <Items buttonArr={buttonArr} handlingClick={handlingClick} />
+    </div>
+  )
 }
 
 export default Buttons

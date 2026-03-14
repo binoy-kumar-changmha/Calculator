@@ -1,7 +1,7 @@
 import styles from './OutputDisplay.module.css'
 
-function OutputDisplay() {
-  return <div className={styles.outputDisplay}>o_o</div>
+function OutputDisplay({output}) {
+  return <div className={styles.outputDisplay}>{output}</div>
 }
 
 export default OutputDisplay
