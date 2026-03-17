@@ -1,11 +1,11 @@
 .outputDisplay {
-  margin-bottom: 3rem;
+  margin-top: 0rem;
   height: 4rem;
   width: 90%;
 
   background-color: rgb(25, 25, 25);
-  /* background-color: rgb(152, 36, 36); */
-  font-size: 3rem;
+  background-color: rgb(152, 36, 36);
+  font-size: 2.5rem;
   color: white;
 
   display: flex;
