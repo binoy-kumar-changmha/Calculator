@@ -17,59 +17,49 @@ const App = () => {
   const [output, setOutput] = useState("o_o")
   const [input, setInput] = useState("")
   const inputRef = useRef(null)
-
-
+  const caretRef = useRef(null)
+  const nextCaret = useRef(null)  // ← moved here from InputDisplay
 
   function handlingClick(event, item, caret) {
-    const safeCaret = caret ?? input.length
+    const safeCaret = caret ?? caretRef.current ?? input.length
+
     if (item === "AC") {
       setOutput("o_o")
       setInput("")
     }
     else if (item === "⌫") {
-      setInput(prev => {
-        if (safeCaret === 0) return prev;
-        return prev.slice(0, safeCaret - 1) + prev.slice(safeCaret);
-      })
+      if (safeCaret === 0) return
+      setInput(prev => prev.slice(0, safeCaret - 1) + prev.slice(safeCaret))
+      nextCaret.current = safeCaret - 1  // ← restore caret after delete
     }
     else if (item === "*") {
-      setInput(prev => prev + '×')
-    }
-    else if (item === "÷") {
-      setInput(prev => prev + '/')
+      setInput(prev => prev.slice(0, safeCaret) + '×' + prev.slice(safeCaret))
+      nextCaret.current = safeCaret + 1
     }
     else if (item === "=") {
       try {
-        const expression = input
-          .replace(/×/g, "*")
-          .replace(/÷/g, "/")
-
+        const expression = input.replace(/×/g, "*").replace(/÷/g, "/")
         setOutput(eval(expression))
-      }
-      catch {
+      } catch {
         setOutput("error")
       }
     }
     else {
-      setInput(prev => prev + item)
+      setInput(prev => prev.slice(0, safeCaret) + item + prev.slice(safeCaret))
+      nextCaret.current = safeCaret + 1  // ← restore caret after insert
     }
   }
-
-
 
   function handleKeyboard(e) {
     const key = e.key
     if (key === 'Enter' || key === '=') handlingClick(null, '=')
     else if (key === 'Escape') handlingClick(null, 'AC')
-    // Backspace is now fully handled in InputDisplay
   }
 
-
-
   return <Calculator>
-    <InputDisplay input={input} handleKeyboard={handleKeyboard} setInput={setInput} inputRef={inputRef}></InputDisplay>
-    <OutputDisplay output={output}></OutputDisplay>
-    <Buttons buttonArr={buttonArr} handlingClick={handlingClick}></Buttons>
+    <InputDisplay caretRef={caretRef} nextCaret={nextCaret} input={input} handleKeyboard={handleKeyboard} setInput={setInput} inputRef={inputRef} />
+    <OutputDisplay output={output} />
+    <Buttons buttonArr={buttonArr} handlingClick={handlingClick} />
   </Calculator>
 }
 

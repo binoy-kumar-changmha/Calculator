@@ -1,16 +1,19 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect } from 'react'
 import styles from './InputDisplay.module.css'
 
-function InputDisplay({ input, handleKeyboard, setInput, inputRef }) {
-  const nextCaret = useRef(null)
+function InputDisplay({ input, handleKeyboard, setInput, inputRef, caretRef, nextCaret }) {
+  // nextCaret now comes from App instead of being local
 
-  // Runs after every render, before browser paint — restores caret reliably
   useLayoutEffect(() => {
     if (nextCaret.current !== null && inputRef.current) {
       inputRef.current.setSelectionRange(nextCaret.current, nextCaret.current)
       nextCaret.current = null
     }
   })
+
+  function updateCaret(e) {
+    caretRef.current = e.target.selectionStart
+  }
 
   function sanitize(value) {
     return value
@@ -26,6 +29,9 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef }) {
       type="text"
       className={styles.inputDisplay}
       value={input}
+      onKeyUp={updateCaret}
+      onClick={updateCaret}
+      onSelect={updateCaret}
       onChange={(e) => {
         const pos = e.target.selectionStart
         const raw = e.target.value
@@ -34,7 +40,6 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef }) {
         setInput(sanitized)
       }}
       onKeyDown={(e) => {
-        // Read caret NOW from the ref — before any re-render touches it
         const pos = inputRef.current.selectionStart
 
         if (e.key === 'Backspace') {

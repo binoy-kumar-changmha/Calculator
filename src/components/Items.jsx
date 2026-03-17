@@ -13,6 +13,7 @@ function Items({ buttonArr, handlingClick }) {
           className={`${styles.item}
           ${orangeBtns.includes(item) ? styles.orange : ''}
           ${lightBtns.includes(item) ? styles.lightGrey : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={(event) => handlingClick(event, item)}>
 
           {item === '*' ? '×' : item === '-' ? '−' : item === '/' ? '÷' : item}
