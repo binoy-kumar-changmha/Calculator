@@ -58,11 +58,11 @@ const App = () => {
 
 
   function handleKeyboard(e) {
-  const key = e.key
-  if (key === 'Enter' || key === '=') handlingClick(null, '=')
-  else if (key === 'Escape') handlingClick(null, 'AC')
-  // Backspace is now fully handled in InputDisplay
-}
+    const key = e.key
+    if (key === 'Enter' || key === '=') handlingClick(null, '=')
+    else if (key === 'Escape') handlingClick(null, 'AC')
+    // Backspace is now fully handled in InputDisplay
+  }
 
 
 
