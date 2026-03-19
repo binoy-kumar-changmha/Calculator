@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import Calculator from './components/Calculator'
 import InputDisplay from './components/InputDisplay'
@@ -75,6 +75,12 @@ const App = () => {
     if (key === 'Enter' || key === '=') handlingClick(null, '=')
     else if (key === 'Escape') handlingClick(null, 'AC')
   }
+
+  // in App.jsx, add this once at the top of the component
+  useEffect(() => {
+    const unlock = () => { window.userInteracted = true }
+    window.addEventListener('pointerdown', unlock, { once: true })  // fires only once
+  }, [])
 
   return <Calculator>
     <InputDisplay nextCaret={nextCaret} input={input} handleKeyboard={handleKeyboard} setInput={setInput} inputRef={inputRef} />
