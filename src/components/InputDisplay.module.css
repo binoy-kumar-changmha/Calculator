@@ -1,12 +1,14 @@
 .inputDisplay {
   margin-top: 1rem;
-  height: 8rem;
+  /* height: 8rem; */
+  height: 17%;
   width: 95%;
 
   text-align: right;
-  background-color: rgb(25, 25, 25);
+  background-color: rgb(20, 20, 20);
   /* background-color: rgb(152, 49, 49); */
-  font-size: 5rem;
+  /* font-size: 5rem; */
+  font-size: 10%;
   color: white;
   border: none;
 }

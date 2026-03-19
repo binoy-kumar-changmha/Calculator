@@ -1,9 +1,17 @@
 body {
-  margin: 0rem;
-  /* height: 100vh; */
-  background-color: rgb(25, 25, 25);
-  /* background-color: rgb(40, 162, 67); */
+  margin: 0;
+  background-color: rgb(20, 20, 20);        /* default — mobile */
+  /* background-color: rgb(40, 162, 67);  */
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-color: rgb(35, 35, 35);  /* desktop/laptop — screens wider than 768px */
+    /* background-color: rgb(224, 219, 72); */
+    align-items: center;
+    height: 100vh;
+  }
 }

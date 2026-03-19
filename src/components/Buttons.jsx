@@ -3,7 +3,7 @@ import Items from './Items'
 
 function Buttons({ buttonArr, handlingClick }) {
   return (
-    <div className = {styles.Buttons}>
+    <div className = {styles.buttons}>
       <Items buttonArr={buttonArr} handlingClick={handlingClick} />
     </div>
   )
