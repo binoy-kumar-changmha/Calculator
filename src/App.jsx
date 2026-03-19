@@ -47,7 +47,7 @@ const App = () => {
         return
       }
       try {
-        const expression = input.replace(/×/g, "*").replace(/÷/g, "/")
+        const expression = input.replace(/×/g, "*").replace(/÷/g, "/").replace(/\b0+(\d)/g, '$1')
         const result = eval(expression)
 
         let formatted = Number.isInteger(result)

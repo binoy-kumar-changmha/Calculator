@@ -10,11 +10,22 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
 
   useLayoutEffect(() => {
     if (nextCaret.current !== null && inputRef.current) {
-      inputRef.current.setSelectionRange(nextCaret.current, nextCaret.current)
-      ignoreScroll.current = true
-      inputRef.current.scrollLeft = inputRef.current.scrollWidth
+      const el = inputRef.current
+      const prevScroll = el.scrollLeft  // ← save current scroll position
+
+      el.setSelectionRange(nextCaret.current, nextCaret.current)
+
+      // only auto-scroll to end if caret is at the end
+      if (nextCaret.current >= input.length) {
+        ignoreScroll.current = true
+        el.scrollLeft = el.scrollWidth  // scroll to right end
+      } else {
+        ignoreScroll.current = true
+        el.scrollLeft = prevScroll      // ← restore previous scroll position
+      }
+
       nextCaret.current = null
-      forceUpdate(n => n + 1)  // CHANGED: re-render so getMask reads fresh scrollLeft from DOM
+      forceUpdate(n => n + 1)
     }
   })
 
@@ -40,8 +51,8 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
     const atLeft = sl <= 1                // CHANGED: <= 1 instead of === 0, tolerance for subpixel
 
     if (!atRight && !atLeft) return 'linear-gradient(to right, transparent, black 1rem, black 90%, transparent 100%)'  // middle — both sides
-    if (atLeft)              return 'linear-gradient(to left, transparent, black 1rem)'                                 // left end — right fade only
-    return                          'linear-gradient(to right, transparent, black 1rem)'                                // right end — left fade only
+    if (atLeft) return 'linear-gradient(to left, transparent, black 1rem)'                                 // left end — right fade only
+    return 'linear-gradient(to right, transparent, black 1rem)'                                // right end — left fade only
   }
 
   function getFont(length) {
