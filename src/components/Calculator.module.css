@@ -1,7 +1,7 @@
 .calculator {
   width: 100vw;
   height: 90vh;
-  background-color: rgb(25, 25, 25);
+  background-color: rgb(18, 18, 18);
   /* background-color: rgb(53, 35, 165); */
   text-align: center;
   display: flex;

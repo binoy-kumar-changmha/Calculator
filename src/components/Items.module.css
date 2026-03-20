@@ -9,8 +9,9 @@
   border-radius: 48%;
   font-size: 2rem;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  background-color: dimgrey;
-  border: .05rem solid dimgrey;
+  background-color:rgb(90, 90, 90);
+  /* background-color:dimgray; */
+  border: .05rem solid rgb(90, 90, 90);
   color: white;
   position: relative;
   overflow: hidden;
@@ -23,7 +24,8 @@
 }
 
 .lightGrey {
-  background-color:lightgray;
+  /* background-color: lightgray; */
+  background-color: rgb(200, 200, 200);
   border: .05rem solid lightgray;
   color: black;
 }

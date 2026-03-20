@@ -6,14 +6,14 @@
   width: 95%;
 
   text-align: right;
-  background-color: rgb(25, 25, 25);
+  background-color: rgb(18, 18, 18);
   /* background-color: rgb(152, 49, 49); */
   font-size: 5rem;
   /* font-size: 10%; */
   color: white;
   border: none;
   /* margin-bottom: 2rem; */
-  margin-bottom: 6%;
+  margin-bottom: 2%;
 }
 
 .inputDisplay:focus {
