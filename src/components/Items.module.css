@@ -1,7 +1,7 @@
 .item {
   /* width: 6rem;
   height: 5.8rem; */
-  width: 22.5%;
+  width: 23.5%;
   /* height: 19.3%; */
   aspect-ratio: 1.045;
   /* margin: 0.1rem; */
@@ -17,8 +17,9 @@
 }
 
 .orange {
-  background-color:cornflowerblue;
-  border: .05rem solid cornflowerblue;
+  /* background-color:cornflowerblue; */
+  background-color:rgb(108, 154, 237);
+  border: .05rem solid rgb(108, 154, 237);
 }
 
 .lightGrey {

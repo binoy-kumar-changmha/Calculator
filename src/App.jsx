@@ -78,8 +78,10 @@ const App = () => {
   }, [])
 
   return <Calculator>
-    <InputDisplay nextCaret={nextCaret} input={input} handleKeyboard={handleKeyboard} setInput={setInput} inputRef={inputRef} />
-    <OutputDisplay output={output} />
+    <div className="display">
+      <InputDisplay nextCaret={nextCaret} input={input} handleKeyboard={handleKeyboard} setInput={setInput} inputRef={inputRef} />
+      <OutputDisplay output={output} />
+    </div>
     <Buttons buttonArr={buttonArr} handlingClick={handlingClick} />
   </Calculator>
 }

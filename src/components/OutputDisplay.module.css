@@ -1,11 +1,11 @@
 .outputDisplay {
   /* height: 4rem; */
-  height: 8.5%;
+  height: 25%;
   width: 90%;
 
-  background-color: rgb(20, 20, 20);
+  background-color: rgb(25, 25, 25);
   /* background-color: rgb(152, 36, 36); */
-  font-size: 2.5rem; /*could not make it in percentage */
+  font-size: 2.5rem; /* could not make it in percentage */
   color: white;
 
   text-align: right;
