@@ -20,8 +20,8 @@ const App = () => {
   const nextCaret = useRef(null)
 
   function handlingClick(event, item) {
-    // Read directly from DOM — always accurate, no stale ref
-    const pos = inputRef.current?.selectionStart ?? input.length
+    const start = inputRef.current?.selectionStart ?? input.length
+    const end = inputRef.current?.selectionEnd ?? input.length    // ADDED: track selection end
 
     if (item === "AC") {
       setOutput("o_o")
@@ -29,44 +29,40 @@ const App = () => {
       nextCaret.current = 0
     }
     else if (item === "⌫") {
-      if (pos === 0) return
-      setInput(prev => prev.slice(0, pos - 1) + prev.slice(pos))
-      nextCaret.current = pos - 1
+      if (start === end) {
+        // no selection — normal backspace
+        if (start === 0) return
+        setInput(prev => prev.slice(0, start - 1) + prev.slice(start))
+        nextCaret.current = start - 1
+      } else {
+        // ADDED: delete selected range
+        setInput(prev => prev.slice(0, start) + prev.slice(end))
+        nextCaret.current = start
+      }
     }
     else if (item === "*") {
-      setInput(prev => prev.slice(0, pos) + '×' + prev.slice(pos))
-      nextCaret.current = pos + 1
+      setInput(prev => prev.slice(0, start) + '×' + prev.slice(end))   // CHANGED: end not start
+      nextCaret.current = start + 1
     }
     else if (item === "/") {
-      setInput(prev => prev.slice(0, pos) + '÷' + prev.slice(pos))
-      nextCaret.current = pos + 1
+      setInput(prev => prev.slice(0, start) + '÷' + prev.slice(end))   // CHANGED: end not start
+      nextCaret.current = start + 1
     }
     else if (item === "=") {
-      if (!input.trim()) {
-        setOutput("o_o")  // ← reset to o_o instead of just returning
-        return
-      }
+      if (!input.trim()) { setOutput("o_o"); return }
       try {
         const expression = input.replace(/×/g, "*").replace(/÷/g, "/").replace(/\b0+(\d)/g, '$1')
         const result = eval(expression)
-
-        let formatted = Number.isInteger(result)
-          ? result
-          : parseFloat(result.toPrecision(13))  // trim long decimals
-
-        // if still too long for the display, force exponential
-        if (String(formatted).length > 14) {
-          formatted = result.toExponential(8)   // e.g. 1.6667e+9
-        }
-
+        let formatted = Number.isInteger(result) ? result : parseFloat(result.toPrecision(13))
+        if (String(formatted).length > 14) formatted = result.toExponential(8)
         setOutput(formatted)
       } catch {
         setOutput("error")
       }
     }
     else {
-      setInput(prev => prev.slice(0, pos) + item + prev.slice(pos))
-      nextCaret.current = pos + 1
+      setInput(prev => prev.slice(0, start) + item + prev.slice(end))  // CHANGED: end not start
+      nextCaret.current = start + 1
     }
   }
 
@@ -76,10 +72,9 @@ const App = () => {
     else if (key === 'Escape') handlingClick(null, 'AC')
   }
 
-  // in App.jsx, add this once at the top of the component
   useEffect(() => {
     const unlock = () => { window.userInteracted = true }
-    window.addEventListener('pointerdown', unlock, { once: true })  // fires only once
+    window.addEventListener('pointerdown', unlock, { once: true })
   }, [])
 
   return <Calculator>

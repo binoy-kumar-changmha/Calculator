@@ -4,24 +4,21 @@ import styles from './InputDisplay.module.css'
 function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) {
   const isMobile = 'ontouchstart' in window
   const ignoreScroll = useRef(false)
-  const [, forceUpdate] = useState(0)      // triggers re-render so getMask reads fresh DOM
-
-  // REMOVED: scrollLeftVal ref — no longer tracking manually, reading DOM directly instead
+  const [, forceUpdate] = useState(0)
 
   useLayoutEffect(() => {
     if (nextCaret.current !== null && inputRef.current) {
       const el = inputRef.current
-      const prevScroll = el.scrollLeft  // ← save current scroll position
+      const prevScroll = el.scrollLeft
 
       el.setSelectionRange(nextCaret.current, nextCaret.current)
 
-      // only auto-scroll to end if caret is at the end
       if (nextCaret.current >= input.length) {
         ignoreScroll.current = true
-        el.scrollLeft = el.scrollWidth  // scroll to right end
+        el.scrollLeft = el.scrollWidth
       } else {
         ignoreScroll.current = true
-        el.scrollLeft = prevScroll      // ← restore previous scroll position
+        el.scrollLeft = prevScroll
       }
 
       nextCaret.current = null
@@ -30,12 +27,11 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
   })
 
   function handleScroll() {
-    // CHANGED: removed e parameter, no longer storing scrollLeft manually
     if (ignoreScroll.current) {
       ignoreScroll.current = false
       return
     }
-    forceUpdate(n => n + 1)  // re-render so getMask reads fresh DOM
+    forceUpdate(n => n + 1)
   }
 
   function getMask() {
@@ -43,16 +39,13 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
     if (!el) return 'none'
     const overflows = el.scrollWidth > el.clientWidth
     if (!overflows) return 'none'
-
-    const sl = el.scrollLeft                          // CHANGED: read directly from DOM, always fresh
+    const sl = el.scrollLeft
     const maxScroll = el.scrollWidth - el.clientWidth
-
-    const atRight = sl >= maxScroll - 1   // at right end (default with text-align: right)
-    const atLeft = sl <= 1                // CHANGED: <= 1 instead of === 0, tolerance for subpixel
-
-    if (!atRight && !atLeft) return 'linear-gradient(to right, transparent, black 1rem, black 90%, transparent 100%)'  // middle — both sides
-    if (atLeft) return 'linear-gradient(to left, transparent, black 1rem)'                                 // left end — right fade only
-    return 'linear-gradient(to right, transparent, black 1rem)'                                // right end — left fade only
+    const atRight = sl >= maxScroll - 1
+    const atLeft = sl <= 1
+    if (!atRight && !atLeft) return 'linear-gradient(to right, transparent, black 1rem, black 90%, transparent 100%)'
+    if (atLeft) return 'linear-gradient(to left, transparent, black 1rem)'
+    return 'linear-gradient(to right, transparent, black 1rem)'
   }
 
   function getFont(length) {
@@ -71,7 +64,7 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
   return (
     <input
       ref={inputRef}
-      autoFocus={!isMobile}
+      autoFocus
       inputMode={isMobile ? "none" : "text"}
       type="text"
       className={styles.inputDisplay}
@@ -91,12 +84,21 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
       }}
       onKeyDown={(e) => {
         if (isMobile) return
-        const pos = inputRef.current.selectionStart
+        const start = inputRef.current.selectionStart
+        const end = inputRef.current.selectionEnd              // ADDED: track selection end
+
         if (e.key === 'Backspace') {
           e.preventDefault()
-          if (pos === 0) return
-          setInput(input.slice(0, pos - 1) + input.slice(pos))
-          nextCaret.current = pos - 1
+          if (start === end) {
+            // no selection — normal backspace
+            if (start === 0) return
+            setInput(input.slice(0, start - 1) + input.slice(start))
+            nextCaret.current = start - 1
+          } else {
+            // ADDED: delete selected range
+            setInput(input.slice(0, start) + input.slice(end))
+            nextCaret.current = start
+          }
           return
         }
         if (['Enter', '=', 'Escape'].includes(e.key)) e.preventDefault()
