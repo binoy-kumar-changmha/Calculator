@@ -75,6 +75,8 @@ function InputDisplay({ input, handleKeyboard, setInput, inputRef, nextCaret }) 
         maskImage: getMask()
       }}
       onTouchStart={(e) => { if (isMobile) e.preventDefault() }}  // ADDED: blocks keyboard on mobile, keeps caret
+      // what it does actually ?
+      
       onScroll={handleScroll}
       onChange={(e) => {
         if (isMobile) return
